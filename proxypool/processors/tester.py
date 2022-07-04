@@ -2,7 +2,7 @@ import asyncio
 import aiohttp
 from loguru import logger
 from proxypool.schemas import Proxy
-from proxypool.storages.redis import RedisClient
+from proxypool.storages import store
 from conf.settings import TEST_TIMEOUT, TEST_BATCH, TEST_URL, TEST_VALID_STATUS, TEST_ANONYMOUS
 from aiohttp import ClientProxyConnectionError, ServerDisconnectedError, ClientOSError, ClientHttpProxyError,ClientResponseError
 from asyncio import TimeoutError
@@ -24,7 +24,7 @@ class Tester(object):
     tester for testing proxies in queue
     """
     def __init__(self):
-        self.redis = RedisClient()
+        self.store = store
         self.loop = asyncio.get_event_loop()
 
     async def test(self, proxy: Proxy):
@@ -43,24 +43,24 @@ class Tester(object):
                 async with session.get(TEST_URL, proxy=f"http://{proxy.string()}",
                                        timeout=TEST_TIMEOUT, allow_redirects=False) as response:
                     if response.status in TEST_VALID_STATUS:
-                        self.redis.max(proxy)
+                        self.store.max(proxy)
                         logger.debug(f"Proxy({proxy}) is valid, set max score")
                     else:
-                        self.redis.decrease(proxy)
+                        self.store.decrease(proxy)
                         logger.debug(f"Proxy({proxy})is invalid, decrease score")
             except EXCEPTIONS:
-                self.redis.decrease(proxy)
+                self.store.decrease(proxy)
                 logger.debug(f"Proxy({proxy}) is invalid, decrease score")
 
     @logger.catch
     def run(self):
         logger.debug("Starting Tester...")
-        count = self.redis.count()
+        count = self.store.count()
         logger.debug(f"Have {count} proxies to test")
         cursor = 0
         while True:
             logger.debug(f"Testing proxies use cursor: {cursor}, count: {TEST_BATCH}")
-            cursor, proxies = self.redis.batch(cursor, count=TEST_BATCH)
+            cursor, proxies = self.store.batch(cursor, count=TEST_BATCH)
             if proxies:
                 tasks = [self.test(proxy) for proxy in proxies]
                 self.loop.run_until_complete(asyncio.wait(tasks))

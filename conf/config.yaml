@@ -29,6 +29,7 @@ server:
   port: 8080
 
 default:
+  store: "redis"
   test_url: "https://httpbin.org/ip"
   timeout: 10
   test_batch: 20

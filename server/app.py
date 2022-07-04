@@ -1,14 +1,13 @@
 from uvicorn import run
 from fastapi import FastAPI
 from conf.settings import IS_DEV, API_HOST, API_PORT
-from proxypool.storages.redis import RedisClient
+from proxypool.storages import store
 
 app = FastAPI()
 
 @app.get('/proxy')
 async def get_proxy():
-    redis = RedisClient()
-    proxy = redis.random()
+    proxy = store.random()
     return proxy.string()
 
 
