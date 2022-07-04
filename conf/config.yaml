@@ -1,0 +1,41 @@
+redis:
+  username: ""
+  password: ""
+  db: 15
+  host: "127.0.0.1"
+  port: 6379
+  key: "proxies:universal"
+
+mysql:
+  username: ""
+  password: ""
+  db: "ProxyPool"
+  host: "localhost"
+  port: 3306
+
+proxy:
+  score_max: 100
+  score_min: 0
+  score_init: 10
+  number_max: 50000
+  number_min: 0
+
+cycle:
+  tester: 20
+  getter: 100
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+default:
+  test_url: "https://httpbin.org/ip"
+  timeout: 10
+  test_batch: 20
+  valid_status:
+    - 200
+    - 206
+    - 302
+
+
+
