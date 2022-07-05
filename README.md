@@ -6,16 +6,16 @@
 
 ## 使用准备
 首先当然是克隆代码并进入 ProxyPool 文件夹：
-
+```shell
 git clone https://github.com/GPorter-t/Fastapi-ProxyPool.git
 cd Fastapi-ProxyPool
-
+```
 
 ### 常规启动方式
 常规方式要求有 Python 环境、Redis 环境，具体要求如下：
 
-Python>=3.6
-Redis
+- Python>=3.6 
+- Redis
 
 ### 安装依赖包
 
@@ -33,13 +33,6 @@ pip3 install -r requirements.txt
 python3 main.py
 ```
 运行之后会启动 Tester、Getter、Server，这时访问 `http://127.0.0.1:8080/proxy` 即可获取一个随机可用代理。
-
-或者如果你弄清楚了代理池的架构，可以按需分别运行，命令如下：
-
-python3 run.py --processor getter
-python3 run.py --processor tester
-python3 run.py --processor server
-这里 processor 可以指定运行 Tester、Getter 还是 Server。
 
 ### 使用
 成功运行之后可以通过 `http://127.0.0.1:8080/proxy` 获取一个随机可用代理。
