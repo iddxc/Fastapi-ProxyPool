@@ -27,8 +27,8 @@ class Scheduler(object):
         if not ENABLE_GETTER:
             logger.info("Getter not enabled, exit")
             return
-        getter = Getter()
         loop = 0
+        getter = Getter()
         while True:
             logger.debug(f"Getter Loop({loop}) start...")
             getter.run()

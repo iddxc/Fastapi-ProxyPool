@@ -109,41 +109,7 @@ get random proxy 8.8.8.8:8888
 
 
 ## 扩展代理爬虫
-代理的爬虫均放置在 proxypool/crawlers 文件夹下，目前对接了有限几个代理的爬虫。
+代理的爬虫均放置在 proxypool/spiders 文件夹下，目前对接了有限几个代理的爬虫。
 
-若扩展一个爬虫，只需要在 crawlers 文件夹下新建一个 Python 文件声明一个 Class 即可。
-
-写法规范如下：
-```python
-from pyquery import PyQuery as pq
-from proxypool.schemas.proxy import Proxy
-from proxypool.crawlers.base import BaseCrawler
-
-BASE_URL = 'http://www.664ip.cn/{page}.html'
-MAX_PAGE = 5
-
-class Daili66Crawler(BaseCrawler):
-    """
-    daili66 crawler, http://www.66ip.cn/1.html
-    """
-    urls = [BASE_URL.format(page=page) for page in range(1, MAX_PAGE + 1)]
-
-    def parse(self, html):
-        """
-        parse html file to get proxies
-        :return:
-        """
-        doc = pq(html)
-        trs = doc('.containerbox table tr:gt(0)').items()
-        for tr in trs:
-            host = tr.find('td:nth-child(1)').text()
-            port = int(tr.find('td:nth-child(2)').text())
-            yield Proxy(host=host, port=port)
-```
-
-在这里只需要定义一个 Crawler 继承 BaseCrawler 即可，然后定义好 urls 变量和 parse 方法即可。
-
-urls 变量即为爬取的代理网站网址列表，可以用程序定义也可写成固定内容。
-parse 方法接收一个参数即 html，代理网址的 html，在 parse 方法里只需要写好 html 的解析，解析出 host 和 port，并构建 Proxy 对象 yield 返回即可。
-网页的爬取不需要实现，BaseCrawler 已经有了默认实现，如需更改爬取方式，重写 crawl 方法即可。
-
+若扩展一个爬虫，只需要在 spiders 文件夹下新建一个 Python 文件声明一个 Class 即可。
+注意： 该爬虫必须是scrapy.Spider的子类，可以使用"scrapy genspider spider_name domain"进行创建。
