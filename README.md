@@ -7,17 +7,11 @@
 ## 使用准备
 首先当然是克隆代码并进入 ProxyPool 文件夹：
 
-git clone https://github.com/Python3WebSpider/ProxyPool.git
-cd ProxyPool
-然后选用下面 Docker 和常规方式任意一个执行即可。
-
-## 使用要求
-可以通过两种方式来运行代理池，一种方式是使用 Docker（推荐），另一种方式是常规方式运行，要求如下：
-
-## Docker
+git clone https://github.com/GPorter-t/Fastapi-ProxyPool.git
+cd Fastapi-ProxyPool
 
 
-## 常规方式
+### 常规启动方式
 常规方式要求有 Python 环境、Redis 环境，具体要求如下：
 
 Python>=3.6
